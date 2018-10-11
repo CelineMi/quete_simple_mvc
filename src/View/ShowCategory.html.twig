@@ -1,0 +1,10 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <h2>Numéro de la catégorie : {{ category.id }}</h2>
+    <ul>
+        <li>{{ category.name }}</li>
+
+    </ul>
+    <a href='/categories'>Back to list</a>
+{% endblock %}
