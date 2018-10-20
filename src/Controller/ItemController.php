@@ -1,38 +1,27 @@
 <?php
 
 namespace Controller;
+
 use Model\ItemManager;
+use Model\Item;
 
-use Twig_Loader_Filesystem;
-use Twig_Environment;
-
-class ItemController{
-
-    private $twig;
-
-    public function __construct()
-    {
-        $loader = new \Twig_Loader_Filesystem(__DIR__.'/../View');
-        $this->twig = new \Twig_Environment($loader);
-    }
-
+class ItemController extends AbstractController
+{
 
     public function index(){
-        $itemManager = new ItemManager();
-        $items = $itemManager->selectAllItems();
-
+        $itemManager = new ItemManager($this->pdo);
+        $items = $itemManager->selectAll();
         return $this->twig->render('Item.html.twig', ['items' => $items]);
     }
 
     public function show(int $id)
     {
-        $itemManager = new ItemManager();
-        $item = $itemManager->selectOneItem($id);
+        $itemManager = new ItemManager($this->pdo);
+        $item = $itemManager->selectOneById($id);
         return $this->twig->render('ShowItem.html.twig', ['item' => $item]);
     }
 }
 
 
-?>
 
 

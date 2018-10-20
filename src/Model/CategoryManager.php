@@ -1,24 +1,38 @@
 <?php
 namespace Model;
+use App\Connection;
 
-class CategoryManager{
+class CategoryManager extends AbstractManager
+{
+    const TABLE = 'category';
 
-    public function selectAllItems() :array
+    public function __construct(\PDO $pdo)
     {
-        $pdo = new \PDO(DSN, USER, PASS);
-        $query = "SELECT * FROM category";
-        $res = $pdo->query($query);
-        return $res->fetchAll();
+        parent::__construct(self::TABLE, $pdo);
     }
 
-    public function selectOneItem(int $id) : array
+    public function insert(Category $category)
     {
-        $pdo = new \PDO(DSN, USER, PASS);
-        $query = "SELECT * FROM category WHERE id = :id";
-        $statement = $pdo->prepare($query);
-        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
-        $statement->execute();
-        // contrairement à fetchAll(), fetch() ne renvoie qu'un seul résultat
-        return $statement->fetch();
+        $statement = $this->pdo->prepare('INSERT INTO' . self::TABLE . "('name') VALUES (':name')");
+        $statement->bindvalue(':name', $category->getName(), \PDO::PARAM_STR);
+        if ($statement->execute()){
+            return $this->pdo->lastInsertId();
+        }
+    }
+
+    public function add()
+    {
+        if(!empty($_POST))
+        {
+            $category = new Category();
+            $category->setName($_POST['name']);
+
+            $categoryManager = new CategoryManager();
+            $categoryManager->insert($category);
+
+            header('Location: /category');
+            exit();
+        }
+        return $this->twig->render('category/add.html.twig');
     }
 }

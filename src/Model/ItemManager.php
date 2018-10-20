@@ -1,30 +1,42 @@
 <?php
-// src/Model/ItemManager.php
 namespace Model;
-
-
 
 // récupération de tous les items
 
-class ItemManager{
-    public function selectAllItems() :array
+class ItemManager extends AbstractManager
+{
+    const TABLE = 'item';
+
+    public function __construct(\PDO $pdo)
     {
-        $pdo = new \PDO(DSN, USER, PASS);
-        $query = "SELECT * FROM item";
-        $res = $pdo->query($query);
-        return $res->fetchAll();
+        parent::__construct(self::TABLE, $pdo);
     }
 
-    public function selectOneItem(int $id) : array
+    public function insert(Item $item)
     {
-        $pdo = new \PDO(DSN, USER, PASS);
-        $query = "SELECT * FROM item WHERE id = :id";
-        $statement = $pdo->prepare($query);
-        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
-        $statement->execute();
-        // contrairement à fetchAll(), fetch() ne renvoie qu'un seul résultat
-        return $statement->fetch();
+        $statement = $this->pdo->prepare('INSERT INTO' . self::TABLE . "('title') VALUES (':title')");
+        $statement->bindvalue(':title', $item->getTitle(), \PDO::PARAM_STR);
+        if ($statement->execute()){
+            return $this->pdo->lastInsertId();
+        }
     }
+
+    public function add()
+    {
+        if(!empty($_POST))
+        {
+            $item = new Item();
+            $item->setTitle($_POST['title']);
+
+            $itemManager = new ItemManager();
+            $itemManager->insert($item);
+
+            header('Location: /');
+            exit();
+        }
+        return $this->twig->render('item/add.html.twig');
+    }
+
 }
 
 
