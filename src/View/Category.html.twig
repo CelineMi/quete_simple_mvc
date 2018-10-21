@@ -7,6 +7,18 @@
     <ul>
         {% for category in categories %}
             <li>{{ category.name }}</li>
+            <a href="/category/{{ category.id }}/edit">Modifier</a>
+            <form action="/category/{{ category.id }}/delete" method="post">
+                <input type="submit" value="Supprimer">
+            </form>
+
         {% endfor %}
     </ul>
+    <form action="/category/add" method="post">
+        Nouvelle categorie :<br>
+        <input type="text" name="name"><br>
+        <input type="submit" value="Submit">
+    </form>
 {% endblock %}
+
+

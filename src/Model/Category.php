@@ -8,6 +8,9 @@ class Category
     private $id;
     private $name;
 
+    public function isValid(){
+        return (!empty($this->name));
+    }
     /**
      * @return mixed
      */
@@ -37,7 +40,7 @@ class Category
      */
     public function setName($name)
     {
-        $this->name = $name;
+       $this->name = htmlspecialchars(strip_tags(trim($name)));
     }
 
 }

@@ -28,7 +28,7 @@ class ItemController extends AbstractController
         if ($item->isValid()){
             $itemManager->insert($item);
         }
-        header('location: /');
+        header('Location: /');
     }
 
     public function edit(int $id){
