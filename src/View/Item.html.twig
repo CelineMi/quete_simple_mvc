@@ -6,6 +6,17 @@
     <ul>
         {% for item in items %}
             <li>{{ item.title }}</li>
+            <a href="/item/{{ item.id }}/edit">Modifier</a>
+            <form action="/item/{{ item.id }}/delete" method="post">
+                <input type="submit" value="Supprimer">
+            </form>
+
         {% endfor %}
     </ul>
+
+    <form action="/item/add" method="post">
+        Nouvel item:<br>
+        <input type="text" name="title"><br>
+        <input type="submit" value="Submit">
+    </form>
 {% endblock %}

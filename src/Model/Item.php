@@ -8,6 +8,10 @@ class Item
     private $id;
     private $title;
 
+    public function isValid(){
+        return (!empty($this->title));
+    }
+
     /**
      * @return mixed
      */
@@ -37,7 +41,7 @@ class Item
      */
     public function setTitle($title)
     {
-        $this->title = $title;
+        $this->title = htmlspecialchars(stripslashes(trim($title)));
     }
 
 }

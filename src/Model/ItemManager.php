@@ -14,30 +14,29 @@ class ItemManager extends AbstractManager
 
     public function insert(Item $item)
     {
-        $statement = $this->pdo->prepare('INSERT INTO' . self::TABLE . "('title') VALUES (':title')");
+        $query = "INSERT INTO " . self::TABLE . " (title) VALUES (:title)";
+        $statement = $this->pdo->prepare($query);
         $statement->bindvalue(':title', $item->getTitle(), \PDO::PARAM_STR);
         if ($statement->execute()){
             return $this->pdo->lastInsertId();
         }
     }
 
-    public function add()
+    public function update(Item $item)
     {
-        if(!empty($_POST))
-        {
-            $item = new Item();
-            $item->setTitle($_POST['title']);
+        $query = "UPDATE " . self::TABLE . " SET title=:title WHERE id=:id";
+        $statement = $this->pdo->prepare($query);
+        $statement->bindvalue(':id', $item->getId() ,\PDO::PARAM_STR);
+        $statement->bindvalue(':title', $item->getTitle(), \PDO::PARAM_STR);
+        $statement->execute();
+    }
 
-            $itemManager = new ItemManager();
-            $itemManager->insert($item);
-
-            header('Location: /');
-            exit();
-        }
-        return $this->twig->render('item/add.html.twig');
+    public function delete(int $id){
+        $query = "DELETE FROM " . self::TABLE . " WHERE id=:id";
+        $statement = $this->pdo->prepare($query);
+        $statement->bindvalue(':id', $id, \PDO::PARAM_STR);
+        $statement->execute();
     }
 
 }
 
-
-?>
