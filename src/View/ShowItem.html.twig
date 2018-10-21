@@ -8,6 +8,11 @@
         <li>{{ item.title }}</li>
 
     </ul>
+    <a href="/item/{{ item.id }}/edit">Modifier</a>
+    <form action="/item/{{ item.id }}/delete" method="post">
+        <input type="submit" value="Supprimer">
+    </form>
+
     <a href='/'>Back to list</a>
 {% endblock %}
 

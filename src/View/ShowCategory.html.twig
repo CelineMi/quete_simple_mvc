@@ -6,7 +6,10 @@
     <h2>Numéro de la catégorie : {{ category.id }}</h2>
     <ul>
         <li>{{ category.name }}</li>
-
+        <a href="/category/{{ category.id }}/edit">Modifier</a>
+        <form action="/category/{{ category.id }}/delete" method="post">
+            <input type="submit" value="Supprimer">
+        </form>
     </ul>
     <a href='/categories'>Back to list</a>
 {% endblock %}

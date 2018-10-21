@@ -20,7 +20,6 @@ class CategoryController extends AbstractController {
     {
         $categoryManager = new CategoryManager($this->pdo);
         $category = $categoryManager->selectOneById($id);
-
         return $this->twig->render('ShowCategory.html.twig', ['category' => $category]);
     }
     
